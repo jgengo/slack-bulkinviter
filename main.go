@@ -53,18 +53,24 @@ func main() {
 	switch GetTypeChan(api, *chanID) {
 	case "channel":
 		for _, user := range users {
-			api.InviteUserToChannel(*chanID, user.ID)
-			fmt.Printf("Inviting %s into the channel\n", user.Name)
+			if !user.Deleted {
+				api.InviteUserToChannel(*chanID, user.ID)
+				fmt.Printf("Inviting %s into the channel\n", user.Name)
+			}
 		}
 	case "group":
 		for _, user := range users {
-			api.InviteUserToGroup(*chanID, user.ID)
-			fmt.Printf("Inviting %s into the group\n", user.Name)
+			if !user.Deleted {
+				api.InviteUserToGroup(*chanID, user.ID)
+				fmt.Printf("Inviting %s into the group\n", user.Name)
+			}
 		}
 	case "conversation":
 		for _, user := range users {
-			api.InviteUsersToConversation(*chanID, user.ID)
-			fmt.Printf("Inviting %s into the conversation\n", user.Name)
+			if !user.Deleted {
+				api.InviteUsersToConversation(*chanID, user.ID)
+				fmt.Printf("Inviting %s into the conversation\n", user.Name)
+			}
 		}
 	}
 }
