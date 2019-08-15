@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/nlopes/slack"
 	"os"
+
+	"github.com/nlopes/slack"
 )
 
-func GetTypeChan(api *slack.Client, id string) string {
+func getTypeChan(api *slack.Client, id string) string {
 	var err error
 
 	_, err = api.GetChannelInfo(id)
@@ -50,7 +51,7 @@ func main() {
 		return
 	}
 
-	switch GetTypeChan(api, *chanID) {
+	switch getTypeChan(api, *chanID) {
 	case "channel":
 		for _, user := range users {
 			if !user.Deleted {
