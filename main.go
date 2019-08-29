@@ -29,6 +29,10 @@ func getTypeChan(api *slack.Client, id string) string {
 
 }
 
+func userIsValid(user slack.User) bool {
+	return (!user.Deleted && !user.IsBot && !user.IsRestricted && !user.IsUltraRestricted)
+}
+
 func main() {
 	chanID := flag.String("c", "", "channel/groups ID where you want to invite everyone")
 
@@ -54,21 +58,21 @@ func main() {
 	switch getTypeChan(api, *chanID) {
 	case "channel":
 		for _, user := range users {
-			if !user.Deleted {
+			if userIsValid(user) {
 				api.InviteUserToChannel(*chanID, user.ID)
 				fmt.Printf("Inviting %s into the channel\n", user.Name)
 			}
 		}
 	case "group":
 		for _, user := range users {
-			if !user.Deleted {
+			if userIsValid(user) {
 				api.InviteUserToGroup(*chanID, user.ID)
 				fmt.Printf("Inviting %s into the group\n", user.Name)
 			}
 		}
 	case "conversation":
 		for _, user := range users {
-			if !user.Deleted {
+			if userIsValid(user) {
 				api.InviteUsersToConversation(*chanID, user.ID)
 				fmt.Printf("Inviting %s into the conversation\n", user.Name)
 			}
